@@ -98,8 +98,8 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["blog.sslxf.cc"];
-pub const RS_PUB_KEY: &str = "iEyskoaYRwLDy5+0qNDqkbPdpxr0kXRSZxNjEsqykyE=";
+pub const RENDEZVOUS_SERVERS: &[&str] = &["crm.anmit.com"];
+pub const RS_PUB_KEY: &str = "swNuwvwVFTrq6P1I7UWKUCm3M5k4kpXlDa1NN7nZ0dQ=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
