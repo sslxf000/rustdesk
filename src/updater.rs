@@ -193,6 +193,9 @@ fn check_update(manually: bool) -> ResultType<()> {
     if !manually {
         return Ok(());
     }
+    if crate::is_custom_client() {
+        return Ok(());
+    }
     #[cfg(target_os = "windows")]
     let update_msi = crate::platform::is_msi_installed()? && !crate::is_custom_client();
     #[cfg(not(target_os = "windows"))]
