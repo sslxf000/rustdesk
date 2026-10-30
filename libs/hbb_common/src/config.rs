@@ -990,7 +990,7 @@ impl Config {
             // https://docs.microsoft.com/en-us/windows/win32/ipc/pipe-names
             format!(
                 "\\\\.\\pipe\\{}\\query{}",
-                CUSTOM_INSTANCE_NAME.read().unwrap(),
+                CUSTOM_INSTANCE_NAME,
                 postfix
             )
         }
