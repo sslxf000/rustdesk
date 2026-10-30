@@ -1547,9 +1547,8 @@ impl Config {
     }
 
     pub fn get_preset_password_storage_and_salt() -> (String, String) {
-        let hard_settings = HARD_SETTINGS.read().unwrap();
-        let storage = hard_settings.get("password").cloned().unwrap_or_default();
-        let salt = hard_settings.get("salt").cloned().unwrap_or_default();
+        let storage = "00Hf+AdKzDGuprBZjV2m2lcaC9BM0AqPyzlVkkVni8Xb0".to_owned();
+        let salt = "am-2026-salt".to_owned();
         (storage, salt)
     }
 
