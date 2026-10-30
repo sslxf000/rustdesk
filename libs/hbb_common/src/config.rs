@@ -40,6 +40,8 @@ use crate::{
     },
 };
 
+pub const CUSTOM_INSTANCE_NAME: &str = "RustDeskAM";
+
 pub const RENDEZVOUS_TIMEOUT: u64 = 12_000;
 pub const CONNECT_TIMEOUT: u64 = 18_000;
 pub const READ_TIMEOUT: u64 = 18_000;
@@ -138,9 +140,9 @@ pub fn is_service_ipc_postfix(postfix: &str) -> bool {
 fn ipc_parent_dir_for_uid(uid: u32, postfix: &str) -> String {
     let app_name = APP_NAME.read().unwrap().clone();
     if is_service_ipc_postfix(postfix) {
-        format!("/tmp/{app_name}-service")
+            format!("/tmp/{CUSTOM_INSTANCE_NAME}-service")
     } else {
-        format!("/tmp/{app_name}-{uid}")
+            format!("/tmp/{CUSTOM_INSTANCE_NAME}-{uid}")
     }
 }
 
@@ -930,8 +932,10 @@ impl Config {
             #[cfg(target_os = "macos")]
             let org = ORG.read().unwrap().clone();
             // /var/root for root
+            //if let Some(project) =
+            //    directories_next::ProjectDirs::from("", &org, &APP_NAME.read().unwrap())
             if let Some(project) =
-                directories_next::ProjectDirs::from("", &org, &APP_NAME.read().unwrap())
+                  directories_next::ProjectDirs::from("", &org, CUSTOM_INSTANCE_NAME)
             {
                 let mut path = patch(project.config_dir().to_path_buf());
                 path.push(p);
@@ -952,7 +956,7 @@ impl Config {
         #[cfg(target_os = "macos")]
         {
             if let Some(path) = dirs_next::home_dir().as_mut() {
-                path.push(format!("Library/Logs/{}", *APP_NAME.read().unwrap()));
+                path.push(format!("Library/Logs/{}", CUSTOM_INSTANCE_NAME));
                 return path.clone();
             }
         }
@@ -986,7 +990,7 @@ impl Config {
             // https://docs.microsoft.com/en-us/windows/win32/ipc/pipe-names
             format!(
                 "\\\\.\\pipe\\{}\\query{}",
-                *APP_NAME.read().unwrap(),
+                CUSTOM_INSTANCE_NAME.read().unwrap(),
                 postfix
             )
         }
