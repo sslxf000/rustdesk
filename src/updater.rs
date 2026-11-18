@@ -1,6 +1,11 @@
 mod artifact;
 mod download;
 
+/// 定制版：永久禁用所有软件更新检查（后台自动检查 + macOS root 守护进程检查 + 手动检查）。
+/// 必须独立于 is_custom_client()，因为定制版 APP_NAME 已还原为 "RustDesk"，
+/// is_custom_client() 恒为 false，原来的守卫全部失效。
+pub const DISABLE_UPDATE: bool = true;
+
 use crate::common::do_check_software_update;
 use artifact::verified_update_artifact_from_release_page_url;
 pub(crate) use artifact::{current_update_arch, current_update_format, current_update_platform};
@@ -193,7 +198,7 @@ fn check_update(manually: bool) -> ResultType<()> {
     if !manually {
         return Ok(());
     }
-    if crate::is_custom_client() {
+    if DISABLE_UPDATE || crate::is_custom_client() {
         return Ok(());
     }
     #[cfg(target_os = "windows")]
@@ -516,6 +521,10 @@ pub fn start_auto_update_macos() {
 
 #[cfg(target_os = "macos")]
 pub fn check_update_as_root() -> ResultType<bool> {
+    if DISABLE_UPDATE {
+        log::info!("[root-update] Update disabled by custom build, skipping.");
+        return Ok(false);
+    }
     let _update_lock = acquire_mac_update_lock()?;
     // Allow-auto-update setting
     if !config::Config::get_bool_option(keys::OPTION_ALLOW_AUTO_UPDATE) {

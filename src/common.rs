@@ -1044,7 +1044,8 @@ pub fn is_modifier(evt: &KeyEvent) -> bool {
 }
 
 pub fn check_software_update() {
-    if is_custom_client() {
+    // 定制版：永久禁用软件更新检查（独立于 is_custom_client，APP_NAME 已还原为 RustDesk）
+    if crate::updater::DISABLE_UPDATE || is_custom_client() {
         return;
     }
     let opt = LocalConfig::get_option(keys::OPTION_ENABLE_CHECK_UPDATE);

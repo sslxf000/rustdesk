@@ -524,8 +524,8 @@ class _GeneralState extends State<_General> {
   Widget other() {
     final incomingOnly = bind.isIncomingOnly();
     final outgoingOnly = bind.isOutgoingOnly();
-    final showAutoUpdate = (isWindows && bind.mainIsInstalled()) ||
-    (isMacOS && bind.mainIsInstalled() && bind.mainIsInstalledDaemon(prompt: false) && !bind.isCustomClient());
+    // 定制版：永久隐藏更新相关选项（对应 Rust 侧 DISABLE_UPDATE = true）
+    final showAutoUpdate = false;
     final children = <Widget>[
       if (!isWeb && !incomingOnly)
         _OptionCheckBox(context, 'Confirm before closing multiple tabs',
@@ -593,13 +593,7 @@ class _GeneralState extends State<_General> {
             ),
           ),
       ],
-      if (!isWeb && !bind.isCustomClient())
-        _OptionCheckBox(
-          context,
-          'Check for software update on startup',
-          kOptionEnableCheckUpdate,
-          isServer: false,
-        ),
+      // 定制版：已移除"启动时检查软件更新"选项（对应 Rust 侧 DISABLE_UPDATE = true）
       if (showAutoUpdate)
         _OptionCheckBox(
           context,
